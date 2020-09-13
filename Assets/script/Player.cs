@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     public Transform YAxis;
     public Transform XAxis;
     public float Speed;
+    public BoxCollider attack;
+    
 
     public float XSpeed = 1.0f;
     public float YSpeed = 1.0f;
@@ -20,17 +22,19 @@ public class Player : MonoBehaviour
         mainCamera = Camera.main.gameObject;
         player = GameObject.FindGameObjectWithTag("Player");
         PlayerRigid = player.GetComponent<Rigidbody>();
+        
     }
 
     // Update is called once per frame
-    float sight_x = 0;
-    float sight_y = 0;
+    //float sight_x = 0;
+    //float sight_y = 0;
     void Update()
     {
         transform.position = player.transform.position;
         Move();
         Camera_control();
         Camera_joystick();
+        Attack();
     }
 
     void OnCollisionStay(Collision col)
@@ -55,6 +59,19 @@ public class Player : MonoBehaviour
         float yRotation = Input.GetAxis("Mouse Y") * YSpeed;
         YAxis.transform.Rotate(0, xRotation, 0);
         XAxis.transform.Rotate(-yRotation, 0, 0);
+    }
+
+    void Attack()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            attack.enabled = true;
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            attack.enabled = false;
+        }
+        
     }
     void Camera_joystick()
     {
