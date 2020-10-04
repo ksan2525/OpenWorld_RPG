@@ -19,6 +19,7 @@ public class Parameter : MonoBehaviour
     void Update()
     {
         LV();
+        XP();
     }
 
     void HP()
@@ -47,10 +48,7 @@ public class Parameter : MonoBehaviour
     }
     void XP()
     {
-        if(timeleft <= 0.0)
-        {
-            timeleft = 1.0f;
-            xp + 1;
-        }
+        xp ++;
+        Debug.Log(xp);
     }
 }

@@ -7,7 +7,7 @@ public class ParameterText : MonoBehaviour
 {
     GameObject player;
     Parameter parameter;
-    [SerializeField] Text lvtext;
+    [SerializeField] private Text lvtext;
     public int lv;
     public int xp;
     
