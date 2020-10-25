@@ -4,51 +4,37 @@ using UnityEngine;
 
 public class Parameter : MonoBehaviour
 {
-    public int lv;
-    public int xp;
+    public int lv;//現在のレベル
+    public int xp;//経験値の総量
     public int hp;
     private float timeleft;
     // Start is called before the first frame update
     void Start()
     {
-        lv = 1;
         
+        xp = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        LV();
-        XP();
+        Debug.Log("lv" + GetLv());
+       
     }
 
     void HP()
     {
         
-        if (lv == 1)
-        {
-            hp = 100;
-        }
-        if (lv == 2)
-        {
-            hp = 110;
-        }
+        
         
     }
     void MP()
     {
 
     }   
-    void LV()
+    int GetLv()
     {
-        if (xp == 10)
-        {
-            lv = 2;
-        }
+        return (xp / 10)*(xp/10);        
     }
-    void XP()
-    {
-        xp ++;
-        Debug.Log(xp);
-    }
+    
 }
