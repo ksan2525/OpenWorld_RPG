@@ -59,6 +59,17 @@ public class Player : MonoBehaviour
         float yRotation = Input.GetAxis("Mouse Y") * YSpeed;
         YAxis.transform.Rotate(0, xRotation, 0);
         XAxis.transform.Rotate(-yRotation, 0, 0);
+
+        if (Input.GetKey(KeyCode.Q))
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
     void Attack()
