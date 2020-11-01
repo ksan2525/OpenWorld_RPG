@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Parameter : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class Parameter : MonoBehaviour
     public int xp;//経験値の総量
     public int hp;
     private float timeleft;
+    public Text parametertext;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,8 +20,9 @@ public class Parameter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        lv = GetLv();
         Debug.Log("lv" + GetLv());
-       
+        Text();
     }
 
     void HP()
@@ -34,7 +37,13 @@ public class Parameter : MonoBehaviour
     }   
     int GetLv()
     {
-        return (xp / 10)*(xp/10);        
+
+        return(int) Mathf.Sqrt(xp / 10);
+    }
+
+    void Text()
+    {
+        parametertext.text = "LV=" + lv;
     }
     
 }
