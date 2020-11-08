@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
 
     void OnCollisionStay(Collision col)
     {
-        if (col.gameObject.tag == "Ground" && Input.GetKeyDown(KeyCode.Space))
+        if (col.gameObject.tag == "Ground" && Input.GetKey(KeyCode.Space))
         {
             PlayerRigid.AddForce(transform.up * Upspeed);
         }
@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
     {
         float dx = Input.GetAxis("Horizontal");
         float dz = Input.GetAxis("Vertical");
-        transform.Translate(dx * Speed, 0.0f, dz * Speed);
+        transform.Translate(dx * Speed * Time.deltaTime, 0.0f, dz * Speed * Time.deltaTime);
         
         
     }
@@ -69,6 +69,24 @@ public class Player : MonoBehaviour
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        if (Input.GetKeyUp(KeyCode.N))
+        {
+            Time.timeScale = 0.1f;
+            Debug.Log("計算速度は1/10だよ");
+        }
+
+        if (Input.GetKeyUp(KeyCode.B))
+        {
+            Time.timeScale = 1f;
+            Debug.Log("計算速度は1/1だよ");
+        }
+
+        if (Input.GetKeyUp(KeyCode.V))
+        {
+            Time.timeScale = 10f;
+            Debug.Log("計算速度は10/1だよ");
         }
     }
 
