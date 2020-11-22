@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     public Transform XAxis;
     public float Speed;
     public BoxCollider attack;
-    
+    private bool isground;
 
     public float XSpeed = 1.0f;
     public float YSpeed = 1.0f;
@@ -26,8 +26,8 @@ public class Player : MonoBehaviour
     }
 
     // Update is called once per frame
-    //float sight_x = 0;
-    //float sight_y = 0;
+    float sight_z = 0;
+    float sight_y = 0;
     void Update()
     {
         transform.position = player.transform.position;
@@ -35,13 +35,14 @@ public class Player : MonoBehaviour
         Camera_control();
         Camera_joystick();
         Attack();
+        
     }
 
     void OnCollisionStay(Collision col)
     {
-        if (col.gameObject.tag == "Ground" && Input.GetKey(KeyCode.Space))
+        if (col.gameObject.tag == "Ground")
         {
-            PlayerRigid.AddForce(transform.up * Upspeed);
+            isground = true;
         }
     }
     void Move()
@@ -49,7 +50,11 @@ public class Player : MonoBehaviour
         float dx = Input.GetAxis("Horizontal");
         float dz = Input.GetAxis("Vertical");
         transform.Translate(dx * Speed * Time.deltaTime, 0.0f, dz * Speed * Time.deltaTime);
-        
+        if (isground &&( Input.GetKey(KeyCode.Space) || Input.GetButton("Jump")))
+        {
+            PlayerRigid.AddForce(transform.up * Upspeed);
+            isground = false;
+        }
         
     }
 
@@ -104,41 +109,54 @@ public class Player : MonoBehaviour
     }
     void Camera_joystick()
     {
-    //    float angleH = Input.GetAxis("joystick X") * 5.0f;
-    //    float angleV = Input.GetAxis("joystick Y") * 5.0f;
-    //    YAxis.transform.Rotate(0, angleH, 0);
-    //    XAxis.transform.Rotate(-angleV, 0, 0);
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
+        float angleH = Input.GetAxis("Horizontal2") * 5.0f;
+        float angleV = Input.GetAxis("Vertical2") * 5.0f;
+
         
-        //if (sight_y > 80)
-        //{
-        //    if(angleV < 0)
-        //    {
-        //        sight_y = sight_y + angleV;
-        //    }
-        //}
-        //else if(sight_y < -90)
-        //{
-        //    if(angleV > 0)
-        //    {
-        //        sight_y = sight_y + angleV;
-        //    }
-        //}
-        //else
-        //{
-        //    sight_y = sight_y + angleV;
-        //}
+        YAxis.transform.Rotate(0, angleH, 0);
+        XAxis.transform.Rotate(-angleV, 0, 0);
+        
+        if (sight_y > 80)
+        {
+            if(angleV < 0)
+            {
+                sight_y = sight_y + angleV;
+            }
+        }
+        else if(sight_y < -90)
+        {
+            if(angleV > 0)
+            {
+                sight_y = sight_y + angleV;
+            }
+        }
+        else
+        {
+            sight_y = sight_y + angleV;
+        }
 
-        //if(sight_x >= 360)
-        //{
-        //    sight_x = sight_x - 360;
-        //}
-        //else if(sight_x < 0)
-        //{
-        //    sight_x = 360 - sight_x;
-        //}
-        //sight_x = sight_x + angleH;
-        //transform.localRotation = Quaternion.Euler(sight_y, sight_x, 0);
+        if(sight_z >= 360)
+        {
+            sight_z = sight_z - 360;
+        }
+        else if(sight_z < 0)
+        {
+            sight_z = 360 - sight_z;
+        }
+        sight_z = sight_z + angleH;
 
+        float dx = Mathf.Sin(sight_z * Mathf.Deg2Rad) * z + Mathf.Sin((sight_z + 90f) * Mathf.Deg2Rad) * x;
 
+        float dz = Mathf.Cos(sight_z * Mathf.Deg2Rad) * z + Mathf.Cos((sight_z + 90f) * Mathf.Deg2Rad) * x;
+
+        //transform.Translate(dx, 0, dz,0.0f);
+
+        transform.localRotation = Quaternion.Euler(sight_y, sight_z, 0);
+        sight_z = sight_z + angleH;
+
+        Debug.Log("dx:dz \n" + dx + " : " + dz);
+        
     }
 }
