@@ -49,7 +49,10 @@ public class Player : MonoBehaviour
     {
         float dx = Input.GetAxis("Horizontal");
         float dz = Input.GetAxis("Vertical");
+        float jx = Input.GetAxis("joystickL_Horizontal");
+        float jz = Input.GetAxis("joystickL_Vertical");
         transform.Translate(dx * Speed * Time.deltaTime, 0.0f, dz * Speed * Time.deltaTime);
+        transform.Translate(jx * Speed * Time.deltaTime, 0.0f, jz * Speed * Time.deltaTime);
         if (isground &&( Input.GetKey(KeyCode.Space) || Input.GetButton("Jump")))
         {
             PlayerRigid.AddForce(transform.up * Upspeed);
@@ -63,7 +66,7 @@ public class Player : MonoBehaviour
         float xRotation = Input.GetAxis("Mouse X") * XSpeed;
         float yRotation = Input.GetAxis("Mouse Y") * YSpeed;
         YAxis.transform.Rotate(0, xRotation, 0);
-        XAxis.transform.Rotate(-yRotation, 0, 0);
+        XAxis.transform.Rotate(-yRotation, 0, 0);//設定していないからうまくいっていない？コントローラーとおんなじ感じにしたら行けんじゃね？簡単に言えば
 
         if (Input.GetKey(KeyCode.Q))
         {
@@ -115,8 +118,8 @@ public class Player : MonoBehaviour
         float angleV = Input.GetAxis("Vertical2") * 5.0f;
 
         
-        YAxis.transform.Rotate(0, angleH, 0);
-        XAxis.transform.Rotate(-angleV, 0, 0);
+        //YAxis.transform.Rotate(0, angleH, 0);
+        //XAxis.transform.Rotate(-angleV, 0, 0);
         
         if (sight_y > 80)
         {
@@ -153,10 +156,14 @@ public class Player : MonoBehaviour
 
         //transform.Translate(dx, 0, dz,0.0f);
 
-        transform.localRotation = Quaternion.Euler(sight_y, sight_z, 0);
+        //↓xaxisはカメラのトランスフォームの値を動かしている、
+        XAxis.transform.localRotation = Quaternion.Euler(sight_y, 0, 0);
+        YAxis.transform.localRotation = Quaternion.Euler(0, sight_z, 0);
         sight_z = sight_z + angleH;
 
         Debug.Log("dx:dz \n" + dx + " : " + dz);
-        
+
+        XAxis.transform.Rotate(0, dx, 0);
+        YAxis.transform.Rotate(dz, 0, 0);
     }
 }
