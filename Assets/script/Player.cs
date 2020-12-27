@@ -17,12 +17,14 @@ public class Player : MonoBehaviour
     public float XSpeed = 1.0f;
     public float YSpeed = 1.0f;
     public Settings settings;
+    int mousecount;
     // Start is called before the first frame update
     void Start()
     {
         mainCamera = Camera.main.gameObject;
         player = GameObject.FindGameObjectWithTag("Player");
         PlayerRigid = player.GetComponent<Rigidbody>();
+        mousecount = 0;
         
     }
 
@@ -62,7 +64,7 @@ public class Player : MonoBehaviour
         float jz = Input.GetAxis("joystickL_Vertical");
         transform.Translate(dx * Speed * Time.deltaTime, 0.0f, dz * Speed * Time.deltaTime);
         transform.Translate(jx * Speed * Time.deltaTime, 0.0f, jz * Speed * Time.deltaTime);
-        if (isground &&( Input.GetKey(KeyCode.Space) || Input.GetButton("Jump")))
+        if (isground &&( Input.GetKeyDown(KeyCode.Space) || Input.GetButton("Jump")))
         {
             PlayerRigid.AddForce(transform.up * Upspeed);
             isground = false;
@@ -84,16 +86,20 @@ public class Player : MonoBehaviour
         //YAxis.transform.Rotate(0, xRotation, 0);
         //XAxis.transform.Rotate(-yRotation, 0, 0);//設定していないからうまくいっていない？コントローラーとおんなじ感じにしたら行けんじゃね？簡単に言えば
 
-        if (Input.GetKey(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            if(mousecount %2 == 0)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
         }
-        else
-        {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+        
 
         if (Input.GetKeyUp(KeyCode.N))
         {

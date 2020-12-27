@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Settings : MonoBehaviour
 {
+    int setteicount;
     public GameObject settei;
     // Start is called before the first frame update
     void Start()
@@ -21,9 +22,22 @@ public class Settings : MonoBehaviour
     void Setting()
     {
 
-        if (Input.GetKey(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape)||Input.GetButtonDown("esc"))
         {
-            settei.SetActive(true);
+            setteicount++;
+            if(setteicount %2 == 0)
+            {
+                OnClickCloseButton();
+            }
+            else
+            {
+                
+                settei.SetActive(true);
+                Time.timeScale = 0f;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+            
         }
 
         
@@ -49,5 +63,8 @@ public class Settings : MonoBehaviour
     public void OnClickCloseButton()
     {
         settei.SetActive(false);
+        Time.timeScale =1.0f;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 }
